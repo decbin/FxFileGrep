@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="329.0" prefWidth="530.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.sdb.kgrep.KeywordGrepController">
+  <children>
+    <BorderPane prefHeight="200.0" prefWidth="320.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <bottom>
+        <BorderPane prefHeight="-1.0" prefWidth="-1.0">
+          <padding>
+            <Insets bottom="10.0" top="10.0" />
+          </padding>
+          <right>
+            <Button mnemonicParsing="false" text="保存" />
+          </right>
+        </BorderPane>
+      </bottom>
+      <center>
+        <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true">
+          <columns>
+            <TableColumn prefWidth="75.0" text="フォルダ名" fx:id="pathCol" />
+            <TableColumn prefWidth="75.0" text="ファイル名" fx:id="fileNameCol" />
+            <TableColumn prefWidth="75.0" text="拡張子" fx:id="extCol" />
+            <TableColumn prefWidth="75.0" text="サイズ(バイト)" fx:id="sizeCol" />
+            <TableColumn prefWidth="75.0" text="更新日時" fx:id="lastModifiedCol" />
+          </columns>
+          <BorderPane.margin>
+            <Insets top="5.0" />
+          </BorderPane.margin>
+        </TableView>
+      </center>
+      <top>
+        <VBox prefHeight="-1.0" prefWidth="-1.0">
+          <children>
+            <GridPane hgap="5.0" vgap="0.0" VBox.vgrow="NEVER">
+              <children>
+                <Label text="フォルダ" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="dirField" prefWidth="200.0" promptText="例：C:\work" text="C:\Projects\KeywordGrep" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Button mnemonicParsing="false" onAction="#handleBrowseAction" text="参照" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <Button mnemonicParsing="false" onAction="#handleGrepAction" text="検索" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label text="ファイル" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="fileField" prefWidth="200.0" promptText="例:*.txt *.xml" text="*.*" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <CheckBox fx:id="fileGrepTypeCheckBox" mnemonicParsing="false" text="正規表現" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <CheckBox fx:id="ignoreCaseCheckBox" mnemonicParsing="false" selected="true" text="大小文字区別" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="198.0" minWidth="10.0" prefWidth="56.0" />
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="370.0" minWidth="10.0" prefWidth="324.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="350.0" minWidth="10.0" prefWidth="130.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="350.0" minWidth="10.0" prefWidth="130.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+              <VBox.margin>
+                <Insets />
+              </VBox.margin>
+            </GridPane>
+          </children>
+        </VBox>
+      </top>
+    </BorderPane>
+  </children>
+</AnchorPane>
