@@ -11,7 +11,7 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="FxFileGrep.jar" size="43005" download="eager" />
+    <jar href="FxFileGrep.jar" size="43241" download="eager" />
   </resources>
 <security>
   <all-permissions/>

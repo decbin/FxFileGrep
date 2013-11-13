@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="329.0" prefWidth="530.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.sdb.kgrep.KeywordGrepController">
+<AnchorPane id="AnchorPane" prefHeight="329.0" prefWidth="680.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.sdb.kgrep.KeywordGrepController">
   <children>
     <BorderPane prefHeight="200.0" prefWidth="320.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
       <bottom>
@@ -28,6 +28,9 @@
             <TableColumn prefWidth="75.0" text="拡張子" fx:id="extCol" />
             <TableColumn prefWidth="75.0" text="サイズ(バイト)" fx:id="sizeCol" />
             <TableColumn prefWidth="75.0" text="更新日時" fx:id="lastModifiedCol" />
+            <TableColumn prefWidth="75.0" text="文字コード" fx:id="encodeCol" />
+            <TableColumn prefWidth="75.0" text="行数" fx:id="lineNoCol" />
+            <TableColumn prefWidth="75.0" text="内容" fx:id="lineCol" />
           </columns>
           <BorderPane.margin>
             <Insets top="5.0" />
@@ -42,17 +45,30 @@
                 <Label text="フォルダ" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <TextField fx:id="dirField" prefWidth="200.0" promptText="例：C:\work" text="C:\Projects\KeywordGrep" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                 <Button mnemonicParsing="false" onAction="#handleBrowseAction" text="参照" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                <Button mnemonicParsing="false" onAction="#handleGrepAction" text="検索" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                 <Label text="ファイル" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <TextField fx:id="fileField" prefWidth="200.0" promptText="例:*.txt *.xml" text="*.*" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <CheckBox fx:id="fileGrepTypeCheckBox" mnemonicParsing="false" text="正規表現" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <CheckBox fx:id="ignoreCaseCheckBox" mnemonicParsing="false" selected="true" text="大小文字区別" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <TextField fx:id="fileField" prefWidth="200.0" promptText="" text="**/*.*" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <children>
+                    <CheckBox id="fileGrepTypeCheckBox" fx:id="fileRegCheckBox" mnemonicParsing="false" text="正規表現" />
+                    <CheckBox id="ignoreCaseCheckBox" fx:id="fileICaseCheckBox" mnemonicParsing="false" selected="false" text="大小文字区別" />
+                  </children>
+                </HBox>
+                <Button mnemonicParsing="false" onAction="#handleFileGrepAction" text="検索" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <Label text="内容" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="keywordField" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <children>
+                    <CheckBox id="fileGrepTypeCheckBox" fx:id="keywordRegCheckBox" mnemonicParsing="false" text="正規表現" />
+                    <CheckBox id="ignoreCaseCheckBox" fx:id="keywordICaseCheckBox" mnemonicParsing="false" selected="false" text="大小文字区別" />
+                  </children>
+                </HBox>
+                <Button mnemonicParsing="false" onAction="#handleKeywordGrepAction" text="検索" GridPane.columnIndex="3" GridPane.rowIndex="2" />
               </children>
               <columnConstraints>
-                <ColumnConstraints hgrow="NEVER" maxWidth="198.0" minWidth="10.0" prefWidth="56.0" />
-                <ColumnConstraints hgrow="ALWAYS" maxWidth="370.0" minWidth="10.0" prefWidth="324.0" />
-                <ColumnConstraints hgrow="NEVER" maxWidth="350.0" minWidth="10.0" prefWidth="130.0" />
-                <ColumnConstraints hgrow="NEVER" maxWidth="350.0" minWidth="10.0" prefWidth="130.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="198.0" minWidth="10.0" prefWidth="49.0" />
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="370.0" minWidth="10.0" prefWidth="353.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="350.0" minWidth="10.0" prefWidth="185.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="350.0" minWidth="10.0" prefWidth="58.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />

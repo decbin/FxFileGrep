@@ -36,9 +36,15 @@ public class KeywordGrepController implements Initializable {
     @FXML
     private TextField fileField;
     @FXML
-    private CheckBox fileGrepTypeCheckBox;
+    private CheckBox fileRegCheckBox;
     @FXML
-    private CheckBox ignoreCaseCheckBox;
+    private CheckBox fileICaseCheckBox;
+    @FXML
+    private TextField keywordField;
+    @FXML
+    private CheckBox keywordRegCheckBox;
+    @FXML
+    private CheckBox keywordICaseCheckBox;    
 
     @FXML
     private TableView<FileInfo> table;
@@ -72,7 +78,23 @@ public class KeywordGrepController implements Initializable {
      */
     @FXML
     private TableColumn<FileInfo, Long> lastModifiedCol;
-
+    
+    /**
+     * 文字コード
+     */
+    @FXML
+    private TableColumn<FileInfo, String> encodeCol;
+    /**
+     * 行数
+     */
+    @FXML
+    private TableColumn<FileInfo, String> lineNoCol;
+    /**
+     * 行内容
+     */
+    @FXML
+    private TableColumn<FileInfo, String> lineCol;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.pathCol.setCellValueFactory(new PropertyValueFactory<FileInfo, String>("path"));
@@ -168,12 +190,12 @@ public class KeywordGrepController implements Initializable {
     }
 
     /**
-     * ファイル選択ボタンを押した場合実行される処理
+     * ファイル検索ボタンを押した場合実行される処理
      *
      * @param event イベント
      */
     @FXML
-    private void handleGrepAction(ActionEvent event) {
+    private void handleFileGrepAction(ActionEvent event) {
 
         // 検索先
         final String dirPath = dirField.getText();
@@ -196,11 +218,14 @@ public class KeywordGrepController implements Initializable {
         }
         setNodeNormal(fileField);
 
-        final FileFinder.FindType fileGrepType = fileGrepTypeCheckBox.isSelected() ? FileFinder.FindType.REGEX : FileFinder.FindType.GLOB;
-        final boolean casesensitive = ignoreCaseCheckBox.isSelected();
+        final FileFinder.FindType fileGrepType = fileRegCheckBox.isSelected() ? FileFinder.FindType.REGEX : FileFinder.FindType.GLOB;
+        final boolean casesensitive = fileICaseCheckBox.isSelected();
         final String pattern = fileField.getText();
         final FileFindTask task = new FileFindTask(Paths.get(dirPath), fileGrepType, casesensitive, pattern);
         table.setItems(task.getFindResult());
         new Thread(task).start();
+    }
+    @FXML
+    private void handleKeywordGrepAction(ActionEvent event) {
     }
 }
