@@ -4,7 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/gitHub/FxFileGrep/src/com/sdb/kgrep/KeywordGrepController.java</file>
+            <file>file:/C:/gitHub/FxFileGrep/src/com/sdb/kgrep/read/TextFileReader.java</file>
             <file>file:/C:/gitHub/FxFileGrep/src/com/sdb/kgrep/FileInfo.java</file>
+            <file>file:/C:/gitHub/FxFileGrep/src/com/sdb/kgrep/util/CharsetDecoder.java</file>
+            <file>file:/C:/gitHub/FxFileGrep/src/com/sdb/kgrep/find/FileFindTask.java</file>
         </group>
     </open-files>
 </project-private>
