@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="329.0" prefWidth="680.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.sdb.kgrep.KeywordGrepController">
+<AnchorPane id="AnchorPane" prefHeight="329.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sdb.kgrep.KeywordGrepController">
   <children>
     <BorderPane prefHeight="200.0" prefWidth="320.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
       <bottom>
@@ -23,14 +21,14 @@
       <center>
         <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true">
           <columns>
-            <TableColumn prefWidth="75.0" text="フォルダ名" fx:id="pathCol" />
-            <TableColumn prefWidth="75.0" text="ファイル名" fx:id="fileNameCol" />
-            <TableColumn prefWidth="75.0" text="拡張子" fx:id="extCol" />
-            <TableColumn prefWidth="75.0" text="サイズ(バイト)" fx:id="sizeCol" />
-            <TableColumn prefWidth="75.0" text="更新日時" fx:id="lastModifiedCol" />
-            <TableColumn prefWidth="75.0" text="文字コード" fx:id="encodeCol" />
-            <TableColumn prefWidth="75.0" text="行数" fx:id="lineNoCol" />
-            <TableColumn prefWidth="75.0" text="内容" fx:id="lineCol" />
+            <TableColumn fx:id="pathCol" prefWidth="75.0" text="フォルダ名" />
+            <TableColumn fx:id="fileNameCol" prefWidth="75.0" text="ファイル名" />
+            <TableColumn fx:id="extCol" prefWidth="75.0" text="拡張子" />
+            <TableColumn fx:id="sizeCol" prefWidth="75.0" text="サイズ(バイト)" />
+            <TableColumn fx:id="lastModifiedCol" prefWidth="75.0" text="更新日時" />
+            <TableColumn fx:id="encodeCol" prefWidth="75.0" text="文字コード" />
+            <TableColumn fx:id="lineNoCol" prefWidth="75.0" text="行数" />
+            <TableColumn fx:id="lineCol" prefWidth="75.0" text="内容" />
           </columns>
           <BorderPane.margin>
             <Insets top="5.0" />
@@ -62,7 +60,7 @@
                     <CheckBox id="ignoreCaseCheckBox" fx:id="keywordICaseCheckBox" mnemonicParsing="false" selected="false" text="大小文字区別" />
                   </children>
                 </HBox>
-                <Button mnemonicParsing="false" onAction="#handleKeywordGrepAction" text="検索" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                <Button fx:id="searchTxtButton" mnemonicParsing="false" onAction="#handleKeywordGrepAction" text="検索" GridPane.columnIndex="3" GridPane.rowIndex="2" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="NEVER" maxWidth="198.0" minWidth="10.0" prefWidth="49.0" />

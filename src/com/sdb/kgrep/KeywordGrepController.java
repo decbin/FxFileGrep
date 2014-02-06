@@ -10,11 +10,13 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -26,12 +28,15 @@ import javafx.stage.DirectoryChooser;
 import javafx.util.Callback;
 
 /**
+ * 画面のController。
  *
  * @author debin.sun
  */
 public class KeywordGrepController implements Initializable {
 
     private String recentDirPath = null;
+    @FXML
+    private Button searchTxtButton;
 
     @FXML
     private TextField dirField;
@@ -162,6 +167,7 @@ public class KeywordGrepController implements Initializable {
                 };
             }
         });
+        disableKeywordGrep(true);
     }
 
     /**
@@ -211,8 +217,23 @@ public class KeywordGrepController implements Initializable {
         final String pattern = fileField.getText();
         final String dirPath = dirField.getText();
         final FileFindTask task = new FileFindTask(Paths.get(dirPath), fileGrepType, casesensitive, pattern);
-        table.setItems(task.getFiles());
+        final ObservableList<FileInfo> files = task.getFiles();
+        table.setItems(files);
+        files.addListener(new ListChangeListener<FileInfo>() {
+            @Override
+            public void onChanged(ListChangeListener.Change<? extends FileInfo> change) {
+                disableKeywordGrep(table.getItems().isEmpty());
+            }
+        });
         new Thread(task).start();
+
+    }
+
+    private void disableKeywordGrep(boolean disable) {
+        keywordField.setDisable(disable);
+        keywordRegCheckBox.setDisable(disable);
+        keywordICaseCheckBox.setDisable(disable);
+        searchTxtButton.setDisable(disable);
     }
 
     @FXML
@@ -223,13 +244,13 @@ public class KeywordGrepController implements Initializable {
             return;
         }
         final ObservableList<FileInfo> files = table.getItems();
-        if(files == null || files.isEmpty()) {
+        if (files == null || files.isEmpty()) {
             return;
         }
         final FileGrepTask.GrepType grepType = keywordRegCheckBox.isSelected() ? FileGrepTask.GrepType.REGEX : FileGrepTask.GrepType.WORD;
         final FileGrepTask task = new FileGrepTask(files, grepType, keyword);
         table.setItems(task.getGrepResults());
-        new Thread(task).start();        
+        new Thread(task).start();
     }
 
     /**
