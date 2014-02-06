@@ -4,6 +4,7 @@ import com.sdb.kgrep.FileInfo;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -20,7 +21,7 @@ public class FileFindTask extends Task<ObservableList<FileInfo>> {
     private final Path start;
     private final String[] patterns;
     private final FileFinder.FindType type;
-    private final ObservableList<FileInfo> findResult;
+    private final ObservableList<FileInfo> files;
     /**
      * 大文字・小文字の区別要否。<br/>
      * true:区別する。false:区別しない。
@@ -36,7 +37,7 @@ public class FileFindTask extends Task<ObservableList<FileInfo>> {
         this.start = start;
         this.type = type;
         this.patterns = patterns;
-        this.findResult = FXCollections.observableArrayList();
+        this.files = FXCollections.observableArrayList();
     }
 
     @Override
@@ -48,16 +49,18 @@ public class FileFindTask extends Task<ObservableList<FileInfo>> {
 
             @Override
             public void run() {
+                final List<FileInfo> fileList = new ArrayList<FileInfo>();
                 for (Path path : pathList) {
-                    FileFindTask.this.findResult.add(createResult(path));
+                    fileList.add(createResult(path));
                 }
+                FileFindTask.this.files.setAll(fileList);
             }
         });
-        return this.findResult;
+        return this.files;
     }
 
-    public ObservableList<FileInfo> getFindResult() {
-        return findResult;
+    public ObservableList<FileInfo> getFiles() {
+        return files;
     }
 
     public static FileInfo createResult(Path path) {

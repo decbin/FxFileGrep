@@ -26,7 +26,10 @@ public class FileInfo {
      * 拡張子
      */
     public StringProperty extProperty = new SimpleStringProperty(this, "拡張子", null);
-
+    /**
+     * 文字コード
+     */
+    public StringProperty encodeProperty = new SimpleStringProperty(this, "文字コード", null);
     /**
      * サイズ
      */
@@ -37,15 +40,15 @@ public class FileInfo {
      */
     public LongProperty lastModifiedProperty = new SimpleLongProperty(this, "更新日時", 0L);
 
-//    /**
-//     * 行数
-//     */
-//    public StringProperty lineNoProperty = new SimpleStringProperty(this, "行数", null);
-//
-//    /**
-//     * 内容
-//     */
-//    public StringProperty contentsProperty = new SimpleStringProperty(this, "内容", null);
+    /**
+     * 行数
+     */
+    public StringProperty lineNoProperty = new SimpleStringProperty(this, "行数", null);
+
+    /**
+     * 内容
+     */
+    public StringProperty lineProperty = new SimpleStringProperty(this, "内容", null);
 
     public String getPath() {
         return pathProperty.get();
@@ -86,20 +89,41 @@ public class FileInfo {
     public void setLastModified(Long lastModified) {
         this.lastModifiedProperty.set(lastModified);
     }
-//
-//    public String getLineNo() {
-//        return lineNoProperty.get();
-//    }
-//
-//    public void setLineNo(String lineNo) {
-//        this.lineNoProperty.set(lineNo);
-//    }
-//
-//    public String getContents() {
-//        return contentsProperty.get();
-//    }
-//
-//    public void setContents(String contents) {
-//        this.contentsProperty.set(contents);
-//    }
+
+    public String getLineNo() {
+        return lineNoProperty.get();
+    }
+
+    public void setLineNo(String lineNo) {
+        this.lineNoProperty.set(lineNo);
+    }
+
+    public String getLine() {
+        return lineProperty.get();
+    }
+
+    public void setLine(String line) {
+        this.lineProperty.set(line);
+    }
+
+    public String getEncode() {
+        return encodeProperty.get();
+    }
+
+    public void setEncode(String encode) {
+        this.encodeProperty.set(encode);
+    }
+    
+    public FileInfo copy() {
+        FileInfo fileInfo = new FileInfo();
+        fileInfo.setExt(this.getExt());
+        fileInfo.setFileName(this.getFileName());
+        fileInfo.setLastModified(this.getLastModified());
+        fileInfo.setLine(this.getLine());
+        fileInfo.setLineNo(this.getLineNo());
+        fileInfo.setPath(this.getPath());
+        fileInfo.setSize(this.getSize());
+        fileInfo.setEncode(this.getEncode());
+        return fileInfo;
+    }
 }

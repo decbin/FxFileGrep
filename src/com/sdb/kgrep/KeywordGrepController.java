@@ -1,5 +1,6 @@
 package com.sdb.kgrep;
 
+import com.sdb.kgrep.grep.FileGrepTask;
 import com.sdb.kgrep.find.FileFindTask;
 import com.sdb.kgrep.find.FileFinder;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -44,7 +46,7 @@ public class KeywordGrepController implements Initializable {
     @FXML
     private CheckBox keywordRegCheckBox;
     @FXML
-    private CheckBox keywordICaseCheckBox;    
+    private CheckBox keywordICaseCheckBox;
 
     @FXML
     private TableView<FileInfo> table;
@@ -78,7 +80,7 @@ public class KeywordGrepController implements Initializable {
      */
     @FXML
     private TableColumn<FileInfo, Long> lastModifiedCol;
-    
+
     /**
      * 文字コード
      */
@@ -94,13 +96,16 @@ public class KeywordGrepController implements Initializable {
      */
     @FXML
     private TableColumn<FileInfo, String> lineCol;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.pathCol.setCellValueFactory(new PropertyValueFactory<FileInfo, String>("path"));
         this.fileNameCol.setCellValueFactory(new PropertyValueFactory<FileInfo, String>("fileName"));
         this.extCol.setCellValueFactory(new PropertyValueFactory<FileInfo, String>("ext"));
         this.sizeCol.setCellValueFactory(new PropertyValueFactory<FileInfo, Long>("size"));
+        this.lineNoCol.setCellValueFactory(new PropertyValueFactory<FileInfo, String>("lineNo"));
+        this.lineCol.setCellValueFactory(new PropertyValueFactory<FileInfo, String>("line"));
+        this.encodeCol.setCellValueFactory(new PropertyValueFactory<FileInfo, String>("encode"));
         this.pathCol.setCellFactory(new Callback<TableColumn<FileInfo, String>, TableCell<FileInfo, String>>() {
             @Override
             public TableCell<FileInfo, String> call(TableColumn<FileInfo, String> p) {
@@ -197,16 +202,52 @@ public class KeywordGrepController implements Initializable {
     @FXML
     private void handleFileGrepAction(ActionEvent event) {
 
+        if (!isFileInfoValid()) {
+            return;
+        }
+
+        final FileFinder.FindType fileGrepType = fileRegCheckBox.isSelected() ? FileFinder.FindType.REGEX : FileFinder.FindType.GLOB;
+        final boolean casesensitive = fileICaseCheckBox.isSelected();
+        final String pattern = fileField.getText();
+        final String dirPath = dirField.getText();
+        final FileFindTask task = new FileFindTask(Paths.get(dirPath), fileGrepType, casesensitive, pattern);
+        table.setItems(task.getFiles());
+        new Thread(task).start();
+    }
+
+    @FXML
+    private void handleKeywordGrepAction(ActionEvent event) {
+        final String keyword = keywordField.getText();
+        if (keyword == null || keyword.trim().isEmpty()) {
+            setNodeError(keywordField, "内容を設定してください。");
+            return;
+        }
+        final ObservableList<FileInfo> files = table.getItems();
+        if(files == null || files.isEmpty()) {
+            return;
+        }
+        final FileGrepTask.GrepType grepType = keywordRegCheckBox.isSelected() ? FileGrepTask.GrepType.REGEX : FileGrepTask.GrepType.WORD;
+        final FileGrepTask task = new FileGrepTask(files, grepType, keyword);
+        table.setItems(task.getGrepResults());
+        new Thread(task).start();        
+    }
+
+    /**
+     * ユーザが入力したファイル情報が正しいか確認する。
+     *
+     * @return true:正しい、 false:不正
+     */
+    private boolean isFileInfoValid() {
         // 検索先
         final String dirPath = dirField.getText();
         if (dirPath == null || dirPath.trim().isEmpty()) {
             setNodeError(dirField, "フォルダを指定してください。");
-            return;
+            return false;
         }
         File dirFile = new File(dirPath);
         if (!dirFile.exists()) {
             setNodeError(dirField, "フォルダが存在しません");
-            return;
+            return false;
         }
         setNodeNormal(dirField);
 
@@ -214,18 +255,9 @@ public class KeywordGrepController implements Initializable {
         String fileNameExp = fileField.getText();
         if (fileNameExp == null || fileNameExp.trim().isEmpty()) {
             setNodeError(fileField, "ファイルを指定してください。");
-            return;
+            return false;
         }
         setNodeNormal(fileField);
-
-        final FileFinder.FindType fileGrepType = fileRegCheckBox.isSelected() ? FileFinder.FindType.REGEX : FileFinder.FindType.GLOB;
-        final boolean casesensitive = fileICaseCheckBox.isSelected();
-        final String pattern = fileField.getText();
-        final FileFindTask task = new FileFindTask(Paths.get(dirPath), fileGrepType, casesensitive, pattern);
-        table.setItems(task.getFindResult());
-        new Thread(task).start();
-    }
-    @FXML
-    private void handleKeywordGrepAction(ActionEvent event) {
+        return true;
     }
 }
